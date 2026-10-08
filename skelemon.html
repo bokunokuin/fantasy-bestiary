@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>達特里安圖書館 — 骷魔</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Noto+Serif+TC:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a0e05;
+    --parchment: #f2e8d5;
+    --parchment-dark: #e0ceab;
+    --parchment-mid: #ead9bc;
+    --parchment-light: #f8f0e0;
+    --gold: #b8922a;
+    --gold-light: #d4a843;
+    --gold-dim: #8a6a18;
+    --teal: #1d5c5c;
+    --accent: #5a3e1e;
+    --accent2: #7a5228;
+    --unique: #3d2a0a;
+    --unique-light: #6b4a18;
+    --nav-bg: #1a0e05;
+    
+    /* 魔物專屬性別色系 */
+    --monster-female: #7a3a1a;
+    --monster-male: #b05a30;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: #0e0a04;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at 50% 0%, #1e1205 0%, #0e0a04 60%);
+  }
+
+  .top-nav {
+    background: var(--nav-bg);
+    border-bottom: 2px solid var(--gold);
+    padding: 10px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.5);
+  }
+  .nav-home {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 13px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-decoration: none;
+    padding: 8px 20px;
+    border: 1.5px solid var(--gold);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-home:hover { background: var(--gold); color: var(--nav-bg); }
+  .nav-home::before { content: '⌂'; font-size: 15px; }
+  .nav-arrows { display: flex; gap: 10px; }
+  .nav-btn {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: rgba(180,130,30,0.7);
+    text-decoration: none;
+    padding: 6px 14px;
+    border: 1px solid rgba(180,130,30,0.4);
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn:hover { color: var(--gold); border-color: var(--gold); background: rgba(180,130,30,0.08); }
+  .nav-btn.prev::before { content: '←'; }
+  .nav-btn.next::after  { content: '→'; }
+  .nav-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: rgba(180,130,30,0.5);
+    text-transform: uppercase;
+  }
+
+  .page-wrapper { max-width: 860px; width: 100%; margin: 40px auto; padding: 0 20px; }
+
+  .codex {
+    background: var(--parchment);
+    position: relative;
+    border: 3px solid var(--gold);
+    box-shadow:
+      0 0 0 8px #2a1500,
+      0 0 0 11px var(--gold),
+      0 0 50px rgba(180,130,30,0.2),
+      inset 0 0 80px rgba(180,140,60,0.1);
+    overflow: hidden;
+    animation: fadeIn 1s ease both;
+  }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .codex::before {
+    content:''; position:absolute; inset:0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    pointer-events:none; z-index:0; opacity:0.7;
+  }
+
+  .header-band {
+    background: var(--ink);
+    padding: 14px 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2;
+    border-bottom: 3px solid var(--gold);
+  }
+  .library-label { font-family:'Cinzel Decorative',serif; font-size:10px; letter-spacing:5px; color:var(--gold); text-transform:uppercase; opacity:0.8; }
+  .entry-num { font-family:'Cinzel Decorative',serif; font-size:11px; color:var(--gold-light); letter-spacing:3px; }
+
+  .rarity-strip {
+    background: linear-gradient(135deg, #2a1e0a 0%, #3d2d10 40%, #2a1e0a 100%);
+    padding: 7px 30px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border-bottom: 2px solid var(--gold);
+    position: relative;
+    z-index: 2;
+  }
+  .rarity-label { font-family:'Cinzel Decorative',serif; font-size:9px; letter-spacing:4px; color:rgba(200,160,80,0.7); text-transform:uppercase; }
+  
+  .rarity-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px rgba(180,130,30,0.6);
+  }
+  .rarity-name { font-family:'Cinzel Decorative',serif; font-size:12px; color:var(--gold-light); letter-spacing:3px; margin-left:auto; }
+
+  .main-content { display:grid; grid-template-columns:290px 1fr; position:relative; z-index:2; }
+
+  .left-col {
+    border-right:2px solid var(--gold); padding:26px 22px;
+    display:flex; flex-direction:column; gap:20px;
+    background:linear-gradient(160deg,var(--parchment) 55%,#ead9bc);
+  }
+
+  .image-frame {
+    border:2px solid var(--gold); position:relative;
+    background:linear-gradient(160deg,#f8f2e0,#f0e8cc);
+    aspect-ratio:1; display:flex; align-items:center; justify-content:center; overflow:hidden;
+  }
+  .image-frame::before{content:'';position:absolute;inset:6px;border:1px solid rgba(180,130,30,0.25);pointer-events:none;}
+  .image-frame::after{content:'';position:absolute;inset:10px;border:1px dashed rgba(180,130,30,0.15);pointer-events:none;}
+  .image-placeholder{display:flex;flex-direction:column;align-items:center;gap:10px;opacity:0.35;}
+  .image-placeholder svg{width:48px;height:48px;}
+  .image-placeholder span{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:3px;color:var(--gold-dim);text-transform:uppercase;}
+  .img-corner{position:absolute;width:18px;height:18px;}
+  .img-corner svg{width:100%;height:100%;}
+  .img-corner.tl{top:-1px;left:-1px;} .img-corner.tr{top:-1px;right:-1px;transform:scaleX(-1);}
+  .img-corner.bl{bottom:-1px;left:-1px;transform:scaleY(-1);} .img-corner.br{bottom:-1px;right:-1px;transform:scale(-1,-1);}
+
+  .quick-stats{display:flex;flex-direction:column;gap:7px;}
+  .stat-row{display:flex;align-items:flex-start;gap:8px;border-bottom:1px dashed rgba(100,60,10,0.25);padding-bottom:6px;}
+  .stat-key{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;min-width:52px;padding-top:2px;flex-shrink:0;}
+  .stat-val{font-family:'IM Fell English',serif;font-size:13px;color:var(--ink);line-height:1.4;}
+  .sex-bar-wrap{width:100%;}
+  .sex-bar{height:7px;background:var(--parchment-dark);border-radius:3px;overflow:hidden;margin-top:4px; border: 1px solid rgba(100,60,10,0.1); display: flex;}
+  .sex-bar-labels{display:flex;justify-content:space-between;font-size:10px;color:#4a3525;margin-top:4px;font-family:'IM Fell English',serif; font-weight: 600;}
+  .race-tag{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--gold-dim);padding:3px 10px;font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:2px;color:var(--gold-dim);cursor:pointer;transition:all 0.2s;text-decoration:none;background:rgba(180,130,30,0.05);margin-right:4px;margin-bottom:4px;}
+  .race-tag:hover{border-color:var(--gold);color:var(--gold);background:rgba(180,130,30,0.12);}
+  .race-tag::before{content:'⊞';font-size:10px;}
+
+  .resist-section{width:100%;}
+  .resist-title{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+  .resist-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--gold-dim),transparent);}
+  .resist-table{width:100%;border-collapse:collapse;font-family:'IM Fell English',serif;font-size:11px;}
+  .resist-table th{font-family:'Cinzel Decorative',serif;font-size:7px;letter-spacing:1px;color:rgba(100,60,10,0.7);text-align:left;padding:3px 5px;border-bottom:1px solid rgba(180,130,30,0.3);}
+  .resist-table td{padding:4px 5px;border-bottom:1px dashed rgba(100,60,10,0.15);vertical-align:top;line-height:1.6;color:var(--ink);}
+  .resist-table td:first-child{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:1px;color:var(--accent2);white-space:nowrap;width:40px;}
+  .tag{display:inline-block;font-size:9px;padding:1px 5px;border-radius:2px;margin:1px 2px 1px 0;font-family:'Noto Serif TC',serif;line-height:1.4;}
+  .tag-high  {background:rgba(30,90,40,0.15);color:#1a5a28;border:1px solid rgba(30,90,40,0.3);}
+  .tag-low   {background:rgba(120,25,25,0.12);color:#7a1a1a;border:1px solid rgba(120,25,25,0.3);}
+  .tag-immune{background:rgba(25,40,90,0.12);color:#1a2a6a;border:1px solid rgba(25,40,90,0.3);}
+  .tag-none  {color:rgba(100,60,10,0.35);font-style:italic;font-size:10px;}
+
+  .right-col{padding:26px 28px;display:flex;flex-direction:column;gap:22px;}
+  .name-block{border-bottom:2px solid var(--gold);padding-bottom:14px;}
+  .monster-name-zh{font-family:'Cinzel Decorative',serif;font-size:26px;color:var(--ink);letter-spacing:4px;line-height:1.1;}
+  .monster-name-en{font-family:'IM Fell English',serif;font-style:italic;font-size:14px;color:var(--teal);letter-spacing:1px;margin-top:4px;}
+  .monster-class{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-top:8px;}
+
+  .section-title{font-family:'Noto Serif TC',serif;font-weight:700;font-size:15px;letter-spacing:2px;color:var(--accent);display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+  .section-title::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--accent),transparent);}
+
+  .description-text{font-family:'Noto Serif TC',serif;font-size:14.5px;line-height:1.9;color:#2a1608;text-indent:2em; text-align: justify;}
+  .description-text+.description-text{margin-top:12px;}
+
+  .unique-wrap{
+    position:relative;border:2px solid var(--unique);
+    background:linear-gradient(135deg,#f8f0d8 0%,#f0e4b8 50%,#f8f0d8 100%);
+    padding:16px 18px 14px;
+    box-shadow:inset 0 0 30px rgba(40,24,0,0.06);
+  }
+  .unique-wrap::before{content:'';position:absolute;inset:5px;border:1px solid rgba(40,24,0,0.2);pointer-events:none;}
+  .unique-badge{display:inline-flex;align-items:center;gap:7px;background:var(--unique);color:#c89030;font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:3px;padding:3px 12px 3px 8px;margin-bottom:12px;position:relative;}
+  .unique-badge::after{content:'';position:absolute;right:-10px;top:0;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:10px solid var(--unique);}
+  
+  .unique-gem{width:8px;height:8px;background:var(--gold);clip-path:polygon(50% 0%,100% 50%,50% 100%,0% 50%);}
+  .unique-name{font-family:'Cinzel Decorative',serif;font-size:14px;letter-spacing:2px;color:var(--unique);margin-bottom:10px;}
+  .unique-desc{font-family:'Noto Serif TC',serif;font-size:13.5px;line-height:1.85;color:#201000;text-align:justify;}
+  .unique-desc strong{color:var(--unique);}
+  .unique-note{margin-top:10px;font-family:'Cinzel Decorative',serif;font-size:8px;line-height:1.5;letter-spacing:2px;color:var(--unique-light);opacity:0.8;border-top:1px dashed rgba(40,24,0,0.25);padding-top:8px;}
+
+  .trivia-box{border:1px solid rgba(180,130,30,0.4);background:linear-gradient(135deg,rgba(255,255,255,0.3),rgba(210,185,140,0.2));overflow:hidden;}
+  .trivia-header{background:var(--ink);padding:6px 16px;font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:4px;color:var(--gold);display:flex;align-items:center;gap:10px;}
+  .trivia-header::after{content:'';flex:1;height:1px;background:linear-gradient(to right,var(--gold-dim),transparent);}
+  .trivia-source{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:2px;color:var(--gold-dim);padding:8px 16px 4px;font-style:italic;}
+  .trivia-text{font-family:'Noto Serif TC',serif;font-style:italic;font-size:13.5px;line-height:1.8;color:#3a2010;padding:6px 16px 14px;}
+
+  .bottom-nav{background:var(--nav-bg);border-top:2px solid var(--gold);padding:14px 30px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2;}
+  .bottom-nav .nav-home{font-size:11px;padding:8px 24px;}
+  .bottom-nav .nav-btn{font-size:10px;padding:7px 18px;}
+
+  .codex-footer{background:#0a0802;border-top:1px solid rgba(180,130,30,0.3);padding:8px 30px;display:flex;align-items:center;justify-content:center;z-index:2;}
+  .footer-text{font-family:'Cinzel Decorative',serif;font-size:8px;letter-spacing:3px;color:rgba(180,130,30,0.4);text-align:center;text-transform:uppercase;}
+
+  @media(max-width:640px){
+    .main-content{grid-template-columns:1fr;}
+    .left-col{border-right:none;border-bottom:2px solid var(--gold);}
+    .monster-name-zh{font-size:20px;}
+    .top-nav .nav-title{display:none;}
+  }
+</style>
+</head>
+<body>
+
+  <nav class="top-nav">
+    <a href="index.html" class="nav-home">達特里安圖書館</a>
+    <span class="nav-title">魔物圖鑑</span>
+    <div class="nav-arrows">
+      <a href="#" style="visibility: hidden;" class="nav-btn prev">上一頁</a>
+      <a href="metal_skelemon.html" class="nav-btn next">下一頁</a>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+  <div class="codex">
+
+    <div class="header-band">
+      <span class="library-label">達特里安圖書館 · 魔物圖鑑</span>
+      <span class="entry-num">No. 001</span>
+    </div>
+
+    <div class="rarity-strip">
+      <span class="rarity-label">稀有度</span>
+      <div class="rarity-dot"></div>
+      <span class="rarity-name" style="color:var(--gold-light);">普遍</span>
+    </div>
+
+    <div class="main-content">
+
+      <div class="left-col">
+
+        <div class="image-frame">
+          <div class="img-corner tl"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
+          <div class="img-corner tr"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
+          <div class="img-corner bl"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
+          <div class="img-corner br"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
+          <img src="skelemon.png" alt="骷魔" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="image-placeholder" style="display: none;">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="4" width="40" height="40" rx="2" stroke="#b8922a" stroke-width="1.5" stroke-dasharray="4,3"/>
+              <circle cx="24" cy="20" r="7" stroke="#b8922a" stroke-width="1.2"/>
+              <path d="M10,40 Q24,28 38,40" stroke="#b8922a" stroke-width="1.2" fill="none"/>
+            </svg>
+            <span>圖像待補</span>
+          </div>
+        </div>
+
+        <div class="quick-stats">
+          <div class="stat-row">
+            <span class="stat-key">種族</span>
+            <div style="display:flex;flex-wrap:wrap;gap:4px;">
+              <span class="race-tag">活死族</span>
+              <span class="race-tag">外甲類</span>
+            </div>
+          </div>
+          <div class="stat-row"><span class="stat-key">體型</span><span class="stat-val">145 ~ 165 cm</span></div>
+          <div class="stat-row"><span class="stat-key">棲息地</span><span class="stat-val">群居於洞窟、地下城與地牢</span></div>
+          <div class="stat-row"><span class="stat-key">食性</span><span class="stat-val">雜食</span></div>
+          <div class="stat-row" style="border:none;flex-direction:column;align-items:flex-start;">
+            <span class="stat-key" style="margin-bottom:5px;">性別分佈</span>
+            <div class="sex-bar-wrap">
+              <div class="sex-bar">
+                <div style="height:100%; width:80%; background:var(--monster-female); border-right: 1px solid rgba(0,0,0,0.3);"></div>
+                <div style="height:100%; width:20%; background:var(--monster-male);"></div>
+              </div>
+              <div class="sex-bar-labels">
+                <span style="color:var(--monster-female);">♀ 雌 80%</span>
+                <span style="color:var(--monster-male);">♂ 雄 20%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="resist-section">
+          <div class="resist-title">耐性一覽</div>
+          <table class="resist-table">
+            <thead>
+              <tr>
+                <th>類型</th>
+                <th>耐性高</th>
+                <th>耐性低</th>
+                <th>免疫</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>物理</td>
+                <td><span class="tag tag-high">斬擊</span></td>
+                <td><span class="tag tag-none">—</span></td>
+                <td><span class="tag tag-none">—</span></td>
+              </tr>
+              <tr>
+                <td>魔法</td>
+                <td><span class="tag tag-high">暗</span>
+                  <span class="tag tag-high">毒</span>
+                  <span class="tag tag-high">地面</span>
+                  <span class="tag tag-high">金屬</span>
+                  <span class="tag tag-high">礦石</span></td>
+                <td><span class="tag tag-low">火</span>
+                  <span class="tag tag-low">武鬥</span>
+                  <span class="tag tag-low">天空</span>
+                  <span class="tag tag-low">自然</span>
+                  <span class="tag tag-low">水</span>
+                  <span class="tag tag-low">冰</span></td>
+                <td><span class="tag tag-immune">電</span></td>
+              </tr>
+              <tr>
+                <td style="border:none;">異常</td>
+                <td style="border:none;"><span class="tag tag-high">中毒</span>
+                  <span class="tag tag-high">麻痺</span></td>
+                <td style="border:none;"><span class="tag tag-none">—</span></td>
+                <td style="border:none;"><span class="tag tag-none">—</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="right-col">
+
+        <div class="name-block">
+          <div class="monster-name-zh">骷魔</div>
+          <div class="monster-name-en">Skelemon</div>
+          <div class="monster-class">活死族 · 外甲類</div>
+        </div>
+
+        <p class="description-text" style="font-style: italic; color: var(--accent2); margin-bottom: 12px; text-indent: 0;">
+          骷魔是地底地下城與幽暗洞窟中最常見的活死族魔物。牠們常因灰白的外殼與骨節運動的步態被冒險者誤認為是亡靈枯骨，但實際上牠們是擁有獨特外甲結構且維持著基本生理機能的活體。
+        </p>
+
+        <div>
+          <div class="section-title">生理外甲與眼部感知</div>
+          <p class="description-text">
+            骷魔最顯著的生理特徵，是覆蓋於頭部正面與軀幹大部分區域的灰白色外殼。這層外殼因呈現灰白色，常被深入地底的冒險者與學者簡稱為「灰殼」。此外殼並非由體表腺體分泌物固化而成，而是牠們在生長過程中，表皮組織逐漸增厚、硬化所形成的角質外甲。這層外殼質地堅韌，能輕易彈開或滑開刀劍的砍殺。
+          </p>
+          <p class="description-text">
+            在外殼之下，骷魔擁有一層暗褐色的皮肉以及流動緩慢的體液。作為活死族生物，牠們雖然維持著呼吸與基本生命代謝，但其生理機能在很大程度上仍需要依賴體內魔力的流動。因為牠們的新陳代謝緩慢，體溫常年維持在 25°C 至 28°C 之間的低溫狀態。牠們擁有一雙發達且能適應黑暗環境的眼睛，視網膜後方具有獨特的照膜，這種能反射光線的眼部結構能極大化地收集並利用坑道中的微光。這雙眼睛在黑暗中會反射出淡淡的黃綠色光芒，便於牠們在漆黑的地道中尋找食物與躲避危險。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title">蜂擁圍捕與粗礪的強化本能</div>
+          <p class="description-text">
+            在幽暗的洞窟與錯綜複雜的坑道深處，單一的骷魔顯得極其單薄，難以與全副武裝的冒險者抗衡，因此牠們總是成群結隊地行動，以數十隻為一個群體進行捕食與防禦。
+          </p>
+          <p class="description-text">
+            當有外來者入侵或遭遇獵物時，骷魔群落會發動如同潮水般的包圍。在面對棘手的對手或遭遇頑抗時，骷魔會主動調動體內的魔力流經全身骨架，藉此短暫地使覆蓋軀幹的灰殼變得更加堅硬，並讓力氣變得更大，動作也更靈活。依仗著這層堅硬的外殼與靈巧的動作，骷魔能承受更猛烈的衝擊，並揮舞手中撿拾來的生鏽鐵劍或輕便短兵器，對目標進行持續且有組織的圍攻與劈砍。這種瘋狂而連綿的攻勢能極大地消耗對手的體力，直到獵物疲憊倒下。在非戰鬥期間，這群魔物主要以地底生長的菌類、富含有機質的腐殖土以及小型活體生物為食，即使面臨地底資源匱乏的窘境，牠們也能藉由體內魔力的緩慢流動維持長期的休眠與存活。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title">日常武裝巡邏與外族溝通機制</div>
+          <p class="description-text">
+            骷魔雖無法理解或吐露人類語言，但表現出了一定程度的工具使用智慧。牠們會收集落入地牢的皮革與金屬殘件，並對其進行剪裁用以包裹自己缺乏外甲保護的柔軟皮肉。日常中，牠們會手持生鏽的鐵劍或輕便短兵器，在領地邊界進行規律的巡邏。
+          </p>
+          <p class="description-text">
+            這群地底居民對地表種族抱持著極高的排他性，完全拒絕任何談判或交易。當負責巡邏的骷魔發現人類接近其領地時，會弓起身體發出沙啞的吼叫，並敲擊手中的武器進行威嚇。若入侵者在此時退去，牠們通常會守在邊界，不會盲目追擊；但若警告被無視，骷魔便會發出高亢的嘶鳴召集群落發起包圍進攻。然而，在面對同屬地底的其他掠食魔物時，牠們則展現出冷靜的生存智慧。為了避免在資源匱乏的地底發生無謂的生死衝突，牠們與其他地底生物遭遇時，會以爪刃在岩壁上刻劃出深刻的痕跡，並留下爪縫中殘留的氣味標示地界，從而在避免戰鬥的前提下，達成緊繃但穩定的領地平衡。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title">築巢選擇與集體育幼制度</div>
+          <p class="description-text">
+            繁殖期時，骷魔群落會尋找地勢較高且乾燥的岩洞共同築巢。牠們不具備固定的配偶關係，雌性會傾向尋找外殼厚實、骨架完整的雄性進行短暫配對，以確保產下的後代能長出堅固外殼的特徵。
+          </p>
+          <p class="description-text">
+            雌性產下軟殼卵後，群落會將所有的卵統一集中放置在巢穴最深處的集體育幼所保管。群落內的成年個體會輪流留守，守護這些卵免受蛇類或地底囓齒類魔物偷食。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title">幼體發育與外殼鈣化</div>
+          <p class="description-text">
+            剛孵化出的幼體體型嬌小且較為脆弱，此時牠們全身已覆蓋著一層嬌嫩、尚未硬化的淡粉色表皮。為保護幼體，群落會將牠們安置在巢穴最深處，並由成年個體共同餵食照顧，定時餵食地底菌類與蕈類。
+          </p>
+          <p class="description-text">
+            隨著幼體成長，牠們的表皮皮膚會逐步角質化與鈣化，逐漸在頭頂與背部脊椎處隆起並硬化，隨後向四肢延伸，最終形成堅硬的外甲。這一發育過程通常需要三至四年。當幼體的外殼完全發育成熟後，群落會引導牠們拿起撿來的輕便武器，正式參與群落的巡邏與捕獵。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title">生理缺陷與實戰建議</div>
+          <p class="description-text">
+            骷魔雖然正面有灰白色外殼防禦，但後腦與腹部並無保護，裸露的暗褐色皮肉一旦遭受精準的穿刺或射擊即可一擊致命。在實戰中，由於其表皮外殼極難散熱，長時間以火焰魔法迫使其處於高溫環境，會導致其內部組織受熱而死。同時，面對成群結隊的包圍，使用具備大範圍衝擊或橫掃效果的法術最為有效，能阻礙牠們輕易合圍，從而瓦解其數量優勢。
+          </p>
+        </div>
+
+        <div>
+          <div class="section-title" style="color:var(--unique);">
+            獨特特殊能力
+            <span style="flex:1;height:1px;background:linear-gradient(to right,var(--unique),transparent);display:block;"></span>
+          </div>
+          <div class="unique-wrap">
+            <div style="margin-bottom:12px;">
+              <span class="unique-badge">
+                <span class="unique-gem"></span>
+                SPECIES EXCLUSIVE
+              </span>
+            </div>
+            <div class="unique-name">◈ 要害攻擊</div>
+            <p class="unique-desc">
+              在交戰中，骷魔憑藉一種近乎直覺的本能，能隱約察覺到對手身上防護薄弱或致命的部位。這並非出於刻意的戰術分析，而是一種天生的感知特質。
+            </p>
+            <p class="unique-desc">
+              一旦牠們的攻擊命中了這些要害，便能輕易刺穿防具與皮肉，造成遠超其單純肉體力量所能達到的致命傷害。這種毫無預兆的直覺一擊，使得冒險者在面對成群的骷魔時，必須時刻保持警惕。
+            </p>
+            
+          </div>
+        </div>
+
+        <div>
+          <div class="trivia-box">
+            <div class="trivia-header">軼事</div>
+            <div class="trivia-source">摘錄自《走遍天下吃遍天下》，作者不詳</div>
+            <div class="trivia-text">
+              「今天在地牢裡清了一批骷魔，收穫不多，不過帶了幾隻回來試著料理看看。<br><br>外殼直接架在篝火上烤，等到聽見『啪』的一聲裂開就差不多了。裡面的肉比我預期的要多，帶點彈性，汁水也還算豐富。味道嘛⋯⋯說真的，跟螃蟹沒什麼兩樣，甚至隱約有點甘甜。這魔物的體溫本來就低，大約只有二十多度，肉質保鮮比一般魔物好處理得多，這點倒是意外的優點。<br><br>下次試試帶醬料進去。」
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="bottom-nav">
+      <div class="nav-arrows">
+        <a href="#" style="visibility: hidden;" class="nav-btn prev">上一頁</a>
+      </div>
+      <a href="index.html" class="nav-home">達特里安圖書館</a>
+      <div class="nav-arrows">
+        <a href="metal_skelemon.html" class="nav-btn next">下一頁</a>
+      </div>
+    </div>
+
+    <div class="codex-footer">
+      <span class="footer-text">達特里安圖書館 · 魔物圖鑑收錄本 · 禁止私自移出館外</span>
+    </div>
+
+  </div>
+  </div>
+
+</body>
+</html>

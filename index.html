@@ -1,1 +1,562 @@
-<!doctype html><html lang="zh-Hant"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>霧境魔物圖鑑</title><meta name="description" content="探索霧境大陸的六種原創魔物，查閱棲地、能力與野外觀察紀錄。"><link rel="icon" href="favicon.svg"><link rel="stylesheet" href="style.css"></head><body><header><a class="brand" href="./">✧ 霧境研究所</a><span>野外觀察卷 · 01</span></header><main><div class="intro"><p class="eyebrow">THE VEILWOOD FIELD GUIDE</p><h1>霧境魔物圖鑑<span>萬物隱於霧，足跡留於此。</span></h1><p class="desc">查閱棲地、辨認魔物，為下一次深入荒野做好準備。</p></div><section class="tools" aria-label="搜尋與篩選"><label class="search"><span aria-hidden="true">⌕</span><input id="search" type="search" placeholder="搜尋魔物名稱、棲地或能力" aria-label="搜尋魔物"></label><div id="filters" class="filters" aria-label="屬性篩選"></div></section><div class="result-line"><h2>已知魔物</h2><span id="count" aria-live="polite"></span></div><section id="grid" class="grid" aria-label="魔物列表"></section><p id="empty" hidden>找不到符合條件的魔物，試試其他關鍵字或屬性。</p><footer><span>霧境研究所 · 魔物觀察檔案</span><span>本圖鑑為原創奇幻設定</span></footer></main><dialog id="detail" aria-labelledby="detail-title"><button class="close" aria-label="關閉詳細資料">×</button><div id="detail-body"></div></dialog><script src="app.js"></script></body></html>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>達特里安圖書館 — 魔物圖鑑總目錄</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Noto+Serif+TC:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a0e05;
+    --parchment: #f2e8d5;
+    --parchment-dark: #e0ceab;
+    --parchment-mid: #ead9bc;
+    --parchment-light: #f8f0e0;
+    --gold: #b8922a;
+    --gold-light: #d4a843;
+    --gold-dim: #8a6a18;
+    --teal: #1d5c5c;
+    --accent: #3a2a08;
+    --accent2: #5a4010;
+    --unique: #281800;
+    --nav-bg: #1a0e05;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    background: #0e0a02;
+    font-family: 'Noto Serif TC', serif;
+    color: var(--ink);
+    min-height: 100vh;
+    background-image: radial-gradient(ellipse at 50% 0%, #1e1604 0%, #0e0a02 70%);
+    overflow-y: scroll;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    padding: 60px 20px 40px;
+    border-bottom: 2px solid var(--gold);
+    background: var(--nav-bg);
+    position: relative;
+    box-shadow: 0 4px 30px rgba(0,0,0,0.6);
+  }
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 10px;
+    background: var(--gold);
+    clip-path: polygon(50% 100%, 0 0, 100% 0);
+  }
+  
+  .library-title-en {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--gold-light);
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  .library-title-zh {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 38px;
+    font-weight: 700;
+    color: #f5eed3;
+    letter-spacing: 8px;
+    text-shadow: 0 0 15px rgba(184,146,42,0.4);
+  }
+
+  .library-subtitle {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(245,238,211,0.6);
+    margin-top: 10px;
+  }
+
+  /* Catalog Container */
+  .container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 40px auto;
+    padding: 0 20px 80px;
+  }
+
+  /* Controls Panel */
+  .controls-panel {
+    background: var(--parchment);
+    border: 2.5px solid var(--gold);
+    box-shadow: 0 0 30px rgba(0,0,0,0.3);
+    padding: 24px 30px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .controls-panel::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(184,146,42,0.3);
+    pointer-events: none;
+  }
+
+  .search-box-wrap {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  .search-input {
+    width: 100%;
+    padding: 12px 20px;
+    background: var(--parchment-light);
+    border: 1.5px solid var(--gold-dim);
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: all 0.3s;
+  }
+  .search-input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 10px rgba(184,146,42,0.2);
+    background: #fff;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+  }
+  .filter-label {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    font-weight: bold;
+    min-width: 70px;
+  }
+  .filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    flex: 1;
+  }
+  .filter-btn {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    background: transparent;
+    border: 1px solid rgba(184,146,42,0.4);
+    color: var(--ink);
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--gold);
+    color: var(--nav-bg);
+    border-color: var(--gold);
+  }
+
+  /* Grid of Monster Cards */
+  .monster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 30px;
+  }
+
+  /* Card design */
+  .card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    outline: none;
+  }
+  .monster-card {
+    background: var(--parchment);
+    border: 2px solid var(--gold);
+    box-shadow: 
+      0 4px 15px rgba(0,0,0,0.2),
+      inset 0 0 40px rgba(140,100,20,0.04);
+    position: relative;
+    padding: 18px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .monster-card::before {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(184,146,42,0.2);
+    pointer-events: none;
+  }
+  .monster-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 
+      0 12px 30px rgba(184,146,42,0.25),
+      inset 0 0 50px rgba(140,100,20,0.06);
+    border-color: var(--gold-light);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px solid var(--gold);
+    padding-bottom: 8px;
+    margin-bottom: 12px;
+  }
+  .card-num {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 2px;
+  }
+  
+  /* Rarity tags color mapped */
+  .card-rarity {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .rarity-dot-small {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+  .rarity-普遍 { color: #8a7355; }
+  .rarity-普遍 .rarity-dot-small { background: #8a7355; }
+  .rarity-罕見 { color: #b88030; }
+  .rarity-罕見 .rarity-dot-small { background: #b88030; box-shadow: 0 0 4px #b88030; }
+  .rarity-稀有 { color: #e35252; }
+  .rarity-稀有 .rarity-dot-small { background: #e35252; box-shadow: 0 0 5px #e35252; }
+  .rarity-史詩 { color: #a335ee; }
+  .rarity-史詩 .rarity-dot-small { background: #a335ee; box-shadow: 0 0 6px #a335ee; }
+
+  /* Card image frame */
+  .card-image-frame {
+    border: 1.5px solid var(--gold);
+    aspect-ratio: 16/10;
+    width: 100%;
+    background: var(--parchment-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .card-image-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .card-image-frame .placeholder-svg {
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+    color: var(--gold-dim);
+  }
+
+  .card-name-zh {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: 2px;
+    margin-bottom: 2px;
+  }
+  .card-name-en {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 12px;
+    color: var(--teal);
+    margin-bottom: 8px;
+  }
+
+  .card-meta-row {
+    font-size: 11px;
+    color: #4a3525;
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+  .card-meta-key {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 8px;
+    color: var(--gold-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: inline-block;
+    width: 45px;
+  }
+  
+  .card-preview {
+    font-family: 'IM Fell English', serif;
+    font-size: 12px;
+    line-height: 1.6;
+    color: #5c4530;
+    margin-top: auto;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(100,60,10,0.15);
+    font-style: italic;
+  }
+
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 12px;
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 8px;
+    letter-spacing: 1px;
+    color: var(--gold-dim);
+    text-transform: uppercase;
+    border-top: 1px solid rgba(184,146,42,0.25);
+    padding-top: 8px;
+  }
+  
+  /* Footer */
+  footer {
+    background: #060401;
+    border-top: 2px solid var(--gold);
+    padding: 30px 20px;
+    text-align: center;
+  }
+  .footer-text {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 9px;
+    letter-spacing: 3px;
+    color: rgba(184,146,42,0.4);
+    text-transform: uppercase;
+  }
+
+  /* Responsive styling */
+  @media (max-width: 600px) {
+    .library-title-zh { font-size: 28px; }
+    .monster-grid { grid-template-columns: 1fr; }
+    .controls-panel { padding: 18px 20px; }
+  }
+</style>
+<meta name="description" content="達特里安圖書館魔物圖鑑，收錄骷魔、金屬骷魔與冰霜骷魔的生態、耐性與特殊能力。"></head>
+<body>
+
+  <header>
+    <div class="library-title-en">Darian Library Catalog</div>
+    <h1 class="library-title-zh">達特里安圖書館</h1>
+    <div class="library-subtitle">魔物圖鑑 · 已定稿收錄 3 種</div>
+  </header>
+
+  <div class="container">
+    
+    <!-- Controls Panel -->
+    <div class="controls-panel">
+      <div class="search-box-wrap">
+        <input type="text" id="searchInput" aria-label="搜尋魔物" class="search-input" placeholder="輸入魔物名稱、介紹或關鍵字以檢索圖書...">
+      </div>
+      
+      <div class="filter-group" style="margin-bottom: 12px;">
+        <span class="filter-label">稀有度</span>
+        <div class="filter-options" id="rarityFilters">
+          <button class="filter-btn active" data-rarity="all">全部</button>
+          <button class="filter-btn" data-rarity="普遍">普遍</button>
+          <button class="filter-btn" data-rarity="稀有">稀有</button>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-label">主要種族</span>
+        <div class="filter-options" id="raceFilters">
+          <button class="filter-btn active" data-race="all">全部</button>
+          <button class="filter-btn" data-race="活死族">活死族</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Monster Grid -->
+    <div class="monster-grid" id="monsterGrid">
+      <!-- Generated by JavaScript -->
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-text">達特里安圖書館 · 圖書目錄管理處 · 禁止私自攜出</div>
+  </footer>
+
+  <script>
+    // Embedded Monster Database
+    const monsters = [
+  {
+    "filename": "skelemon.html",
+    "num": 1,
+    "numStr": "001",
+    "nameZh": "骷魔",
+    "nameEn": "Skelemon",
+    "class": "活死族 · 外甲類",
+    "rarity": "普遍",
+    "raceTags": [
+      "活死族",
+      "外甲類"
+    ],
+    "habitat": "群居於洞窟、地下城與地牢",
+    "diet": "雜食",
+    "previewText": "骷魔最顯著的生理特徵，是覆蓋於頭部正面與軀幹大部分區域的灰白色外殼。這層外殼因呈現灰白色，常被深入地底的冒險者與學者簡稱為「灰殼」。此外殼並非由體表腺體分泌物固..."
+  },
+  {
+    "filename": "metal_skelemon.html",
+    "num": 2,
+    "numStr": "002",
+    "nameZh": "金屬骷魔",
+    "nameEn": "Metal Skelemon",
+    "class": "活死族 · 外甲類",
+    "rarity": "普遍",
+    "raceTags": [
+      "活死族",
+      "外甲類"
+    ],
+    "habitat": "魔窟、地下城、地牢",
+    "diet": "雜食",
+    "previewText": "其最顯著的特徵為覆蓋全身的金屬質外殼，此外殼天生即具備相當的韌性，能有效偏折刀劍利刃的劈砍，連灼熱的魔力光束也難以輕易穿透，且會隨個體成長持續擴張。在其胸口的中..."
+  },
+  {
+    "filename": "frost_skelemon.html",
+    "num": 3,
+    "numStr": "003",
+    "nameZh": "冰霜骷魔",
+    "nameEn": "Frost Skelemon",
+    "class": "活死族 · 外甲類",
+    "rarity": "稀有",
+    "raceTags": [
+      "活死族",
+      "外甲類"
+    ],
+    "habitat": "高海拔雪山、凍原（散居）",
+    "diet": "肉食（雪埋遺骸、小型寒帶生物）",
+    "previewText": "冰霜骷魔擁有極具特色的雙層外殼保護構造。其內層為深色且質地堅硬的凍岩殼，能牢固包裹並支撐內部的肌肉與骨架，能承受沉重的衝撞與外力重壓；外層則緊密附著著一層質地偏..."
+  }
+];
+
+    const monsterGrid = document.getElementById('monsterGrid');
+    const searchInput = document.getElementById('searchInput');
+    const rarityFilters = document.getElementById('rarityFilters');
+    const raceFilters = document.getElementById('raceFilters');
+
+    let activeRarity = 'all';
+    let activeRace = 'all';
+    let searchQuery = '';
+
+    function renderCards() {
+      const filtered = monsters.filter(m => {
+        // Search filter
+        const query = searchQuery.toLowerCase();
+        const matchesSearch = searchQuery === '' || 
+          m.nameZh.toLowerCase().includes(query) || 
+          m.nameEn.toLowerCase().includes(query) || 
+          m.class.toLowerCase().includes(query) ||
+          m.previewText.toLowerCase().includes(query) ||
+          m.habitat.toLowerCase().includes(query);
+
+        // Rarity filter
+        const matchesRarity = activeRarity === 'all' || m.rarity === activeRarity;
+
+        // Race filter
+        const matchesRace = activeRace === 'all' || m.raceTags.includes(activeRace);
+
+        return matchesSearch && matchesRarity && matchesRace;
+      });
+
+      if (filtered.length === 0) {
+        monsterGrid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: var(--gold-dim); font-family: 'IM Fell English', serif; font-style: italic;">沒有檢索到符合條件的魔物記錄...</div>`;
+        return;
+      }
+
+      monsterGrid.innerHTML = filtered.map(m => {
+        const imagePath = m.num === 1 ? 'skelemon.png' : null;
+        
+        return `
+          <a href="${m.filename}" class="card-link">
+            <div class="monster-card">
+              <div class="card-header">
+                <span class="card-num">No. ${m.numStr}</span>
+                <span class="card-rarity rarity-${m.rarity}">
+                  <span class="rarity-dot-small"></span>
+                  ${m.rarity}
+                </span>
+              </div>
+              
+              <div class="card-image-frame">
+                <!-- If image exists, it will load, otherwise show placeholder -->
+                ${imagePath ? `<img src="${imagePath}" alt="${m.nameZh}" style="display:block;">` : `<span style="color:var(--gold-dim);font-size:16px;">圖像待補</span>`}
+                
+              </div>
+
+              <h3 class="card-name-zh">${m.nameZh}</h3>
+              <div class="card-name-en">${m.nameEn}</div>
+              
+              <div class="card-meta-row">
+                <span class="card-meta-key">分類</span>
+                <span>${m.class}</span>
+              </div>
+              <div class="card-meta-row">
+                <span class="card-meta-key">棲息地</span>
+                <span>${m.habitat}</span>
+              </div>
+              
+              <div class="card-preview">
+                ${m.previewText}
+              </div>
+
+              <div class="card-footer">
+                <span>詳細卷軸</span>
+                <span>READ &rarr;</span>
+              </div>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    // Event listeners
+    searchInput.addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderCards();
+    });
+
+    rarityFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        Array.from(rarityFilters.getElementsByClassName('filter-btn')).forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeRarity = e.target.dataset.rarity;
+        renderCards();
+      }
+    });
+
+    raceFilters.addEventListener('click', (e) => {
+      if (e.target.classList.contains('filter-btn')) {
+        Array.from(raceFilters.getElementsByClassName('filter-btn')).forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        activeRace = e.target.dataset.race;
+        renderCards();
+      }
+    });
+
+    // Initial render
+    renderCards();
+  </script>
+</body>
+</html>
