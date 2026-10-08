@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>達特里安圖書館 — 冰霜骷魔</title>
+<title>達特里安圖書館 — 蛭龍</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=IM+Fell+English:ital@0;1&family=Noto+Serif+TC:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
@@ -16,25 +16,26 @@
     --gold-light: #d4a843;
     --gold-dim: #8a6a18;
     --teal: #1d5c5c;
-    --accent: #1a3a4a;
-    --accent2: #2a5a6a;
-    --unique: #0d2a3a;
-    --unique-light: #1a4a60;
+    --accent: #3a2a08;
+    --accent2: #5a4010;
+    --unique: #281800;
+    --unique-light: #483000;
     --nav-bg: #1a0e05;
     
-    /* 魔物專屬性別色系 */
-    --monster-female: #7a3a1a;
-    --monster-male: #b05a30;
+    /* 蛭龍專屬色系 */
+    --leech-accent: #7a2240;
+    --leech-female: #4a1c31;
+    --leech-male: #9c4b57;
   }
 
   * { margin:0; padding:0; box-sizing:border-box; }
 
   body {
-    background: #060c10;
+    background: #0e0a02;
     font-family: 'Noto Serif TC', serif;
     color: var(--ink);
     min-height: 100vh;
-    background-image: radial-gradient(ellipse at 50% 0%, #0a1820 0%, #060c10 60%);
+    background-image: radial-gradient(ellipse at 50% 0%, #1e1604 0%, #0e0a02 60%);
   }
 
   .top-nav {
@@ -146,7 +147,7 @@
     0%, 100% { box-shadow: 0 0 4px rgba(180,130,30,0.5); opacity: 0.9; }
     50% { box-shadow: 0 0 10px rgba(212,168,67,0.9); opacity: 1; }
   }
-  .rarity-name { font-family:'Cinzel Decorative',serif; font-size:12px; color:var(--gold-light); letter-spacing:3px; margin-left:auto; }
+  .rarity-name { font-family:'Cinzel Decorative',serif; font-size:12px; color:#e35252; letter-spacing:3px; margin-left:auto; text-shadow:0 0 10px rgba(138,28,28,0.5); }
 
   .main-content { display:grid; grid-template-columns:290px 1fr; position:relative; z-index:2; }
 
@@ -193,7 +194,6 @@
   .tag-high  {background:rgba(30,90,40,0.15);color:#1a5a28;border:1px solid rgba(30,90,40,0.3);}
   .tag-low   {background:rgba(120,25,25,0.12);color:#7a1a1a;border:1px solid rgba(120,25,25,0.3);}
   .tag-immune{background:rgba(25,40,90,0.12);color:#1a2a6a;border:1px solid rgba(25,40,90,0.3);}
-  .tag-note   { background: rgba(20,80,120,0.10); color: #1a4a70; border: 1px solid rgba(20,80,120,0.25); font-style: italic; }
   .tag-none  {color:rgba(100,60,10,0.35);font-style:italic;font-size:10px;}
 
   .right-col{padding:26px 28px;display:flex;flex-direction:column;gap:22px;}
@@ -252,16 +252,18 @@
     .monster-name-zh{font-size:20px;}
     .top-nav .nav-title{display:none;}
   }
+
+.sex-bar-labels span{font-family:"Noto Serif TC",serif;}
 </style>
-</head>
+<meta name="description" content="達特里安圖書館：蛭龍的生理構造、集群生態、耐性與抗凝血能力。"></head>
 <body>
 
   <nav class="top-nav">
     <a href="index.html" class="nav-home">達特里安圖書館</a>
     <span class="nav-title">魔物圖鑑</span>
     <div class="nav-arrows">
-      <a href="metal_skelemon.html" class="nav-btn prev">上一頁</a>
-      <a href="Leech_Wyvern.html" class="nav-btn next">下一頁</a>
+      <a href="frost_skelemon.html" class="nav-btn prev">上一頁</a>
+      <span class="nav-btn next" style="visibility:hidden" aria-hidden="true">下一頁</span>
     </div>
   </nav>
 
@@ -270,13 +272,13 @@
 
     <div class="header-band">
       <span class="library-label">達特里安圖書館 · 魔物圖鑑</span>
-      <span class="entry-num">No. 003</span>
+      <span class="entry-num">No. 058</span>
     </div>
 
     <div class="rarity-strip">
       <span class="rarity-label">稀有度</span>
       <div class="rarity-dot"></div>
-      <span class="rarity-name" style="color:var(--gold-light);">稀有</span>
+      <span class="rarity-name">稀有</span>
     </div>
 
     <div class="main-content">
@@ -288,7 +290,7 @@
           <div class="img-corner tr"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
           <div class="img-corner bl"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
           <div class="img-corner br"><svg viewBox="0 0 18 18"><path d="M1,1 L17,1 L17,5 L5,5 L5,17 L1,17 Z" fill="none" stroke="#b8922a" stroke-width="1.2"/></svg></div>
-          <div class="image-placeholder" style="display: flex;">
+          <div class="image-placeholder">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <rect x="4" y="4" width="40" height="40" rx="2" stroke="#b8922a" stroke-width="1.5" stroke-dasharray="4,3"/>
               <circle cx="24" cy="20" r="7" stroke="#b8922a" stroke-width="1.2"/>
@@ -302,23 +304,23 @@
           <div class="stat-row">
             <span class="stat-key">種族</span>
             <div style="display:flex;flex-wrap:wrap;gap:4px;">
-              <span class="race-tag">活死族</span>
-              <span class="race-tag">外甲類</span>
+              <span class="race-tag">龍族</span>
+              <span class="race-tag">雙足飛龍類</span>
             </div>
           </div>
-          <div class="stat-row"><span class="stat-key">體型</span><span class="stat-val">145 ~ 165 cm（前肢比例較長）</span></div>
-          <div class="stat-row"><span class="stat-key">棲息地</span><span class="stat-val">高海拔雪山、凍原（散居）</span></div>
-          <div class="stat-row"><span class="stat-key">食性</span><span class="stat-val">肉食（雪埋遺骸、小型寒帶生物）</span></div>
+          <div class="stat-row"><span class="stat-key">體型</span><span class="stat-val">雌 670 ~ 900 cm<br>雄 200 ~ 300 cm</span></div>
+          <div class="stat-row"><span class="stat-key">棲息地</span><span class="stat-val">潮濕陰暗的洞窟深處</span></div>
+          <div class="stat-row"><span class="stat-key">食性</span><span class="stat-val">血液專食者</span></div>
           <div class="stat-row" style="border:none;flex-direction:column;align-items:flex-start;">
             <span class="stat-key" style="margin-bottom:5px;">性別分佈</span>
             <div class="sex-bar-wrap">
               <div class="sex-bar">
-                <div style="height:100%; width:50%; background:var(--monster-female); border-right: 1px solid rgba(0,0,0,0.3);"></div>
-                <div style="height:100%; width:50%; background:var(--monster-male);"></div>
+                <div style="height:100%; width:25%; background:var(--leech-female); border-right: 1px solid rgba(0,0,0,0.3);"></div>
+                <div style="height:100%; width:75%; background:var(--leech-male);"></div>
               </div>
               <div class="sex-bar-labels">
-                <span style="color:var(--monster-female);">♀ 雌 50%</span>
-                <span style="color:var(--monster-male);">♂ 雄 50%</span>
+                <span style="color:var(--leech-female);">♀ 雌 25%</span>
+                <span style="color:var(--leech-male);">♂ 雄 75%</span>
               </div>
             </div>
           </div>
@@ -338,34 +340,46 @@
             <tbody>
               <tr>
                 <td>物理</td>
-                <td><span class="tag tag-high">斬擊</span>
-                  <span class="tag tag-high">穿刺</span></td>
-                <td><span class="tag tag-note">打擊¹</span></td>
+                <td><span class="tag tag-high">打擊</span></td>
+                <td>
+                  <span class="tag tag-low">斬擊</span>
+                  <span class="tag tag-low">穿刺</span>
+                </td>
                 <td><span class="tag tag-none">—</span></td>
               </tr>
               <tr>
                 <td>魔法</td>
-                <td><span class="tag tag-high">暗</span>
-                  <span class="tag tag-high">毒</span>
-                  <span class="tag tag-high">天空</span>
-                  <span class="tag tag-high">電</span></td>
-                <td><span class="tag tag-low">火</span>
-                  <span class="tag tag-low">武鬥</span>
-                  <span class="tag tag-low">金屬</span></td>
-                <td><span class="tag tag-immune">冰</span></td>
+                <td>
+                  <span class="tag tag-high">水</span>
+                  <span class="tag tag-high">地面</span>
+                  <span class="tag tag-high">電</span>
+                </td>
+                <td>
+                  <span class="tag tag-low">自然</span>
+                  <span class="tag tag-low">毒</span>
+                  <span class="tag tag-low">冰</span>
+                  <span class="tag tag-low">金屬</span>
+                </td>
+                <td><span class="tag tag-none">—</span></td>
               </tr>
               <tr>
                 <td style="border:none;">異常</td>
-                <td style="border:none;"><span class="tag tag-none">—</span></td>
-                <td style="border:none;"><span class="tag tag-low">灼熱</span></td>
-                <td style="border:none;"><span class="tag tag-immune">結凍</span>
-                  <span class="tag tag-immune">寒冷</span></td>
+                <td style="border:none;">
+                  <span class="tag tag-high">暈眩</span>
+                  <span class="tag tag-high">爆破</span>
+                </td>
+                <td style="border:none;">
+                  <span class="tag tag-low">惡臭</span>
+                  <span class="tag tag-low">導電</span>
+                  <span class="tag tag-low">冰凍</span>
+                  <span class="tag tag-low">蒸發</span>
+                </td>
+                <td style="border:none;">
+                  <span class="tag tag-immune">溼答答</span>
+                </td>
               </tr>
             </tbody>
           </table>
-          <div style="margin-top:8px;font-family:'Noto Serif TC',serif;font-size:11px;color:var(--accent2);font-style:italic;line-height:1.5;">
-            ¹ 打擊僅對外層冰殼有效，無法傷及內層凍岩殼與本體。
-          </div>
         </div>
 
       </div>
@@ -373,54 +387,68 @@
       <div class="right-col">
 
         <div class="name-block">
-          <div class="monster-name-zh">冰霜骷魔</div>
-          <div class="monster-name-en">Frost Skelemon</div>
-          <div class="monster-class">活死族 · 外甲類</div>
+          <div class="monster-name-zh">蛭龍</div>
+          <div class="monster-name-en">Leech Wyvern</div>
+          <div class="monster-class">龍族 · 雙足飛龍類</div>
         </div>
 
-        <p class="description-text" style="font-style: italic; color: var(--accent2); margin-bottom: 12px; text-indent: 0;">
-          冰霜骷魔是活死族外甲類中適應極寒氣候的珍稀物種，長年棲息於終年積雪的高海拔雪山與酷寒凍原地帶。牠們以散居方式生活，個體之間互不依賴，不具備明顯的社會性群居結構。成年個體的體型介於一百四十五至一百六十五公分之間，其最顯著的外部辨識特徵，在於那雙比例明顯長於常態同屬魔物的發達前肢。
-        </p>
-
         <div>
-          <div class="section-title">雙層凍甲與骨骼特化</div>
+          <div class="section-title">生理構造與感知機制</div>
           <p class="description-text">
-            冰霜骷魔擁有極具特色的雙層外殼保護構造。其內層為深色且質地堅硬的凍岩殼，能牢固包裹並支撐內部的肌肉與骨架，能承受沉重的衝撞與外力重壓；外層則緊密附著著一層質地偏脆的透明冰殼，這層冰晶能在酷寒環境中折射雪地光線，使其在蒼茫雪原中具備極佳的自然偽裝，遠觀時猶如一尊凝固的寒冰雪岩。在其頭部兩側，生有一對向前彎曲的粗壯角狀突起。這對大型長角具備極高的硬度，主要用於同族個體之間的領地競爭，以及撞碎阻礙前行的厚重冰岩障礙物，其鈍重的形態並不適合用於翻攪泥雪。相對地，牠們那雙長度過膝且異常發達的修長前肢，才是適應嚴寒地貌的核心構造，賦予了牠們在崎嶇冰川上靈活攀行，以及刨掘深雪與堅冰的強大機能。
+            蛭龍外表呈現暗紫紅色的韌性肌理，身體結構具備極佳的伸縮彈性。其雙翼翼爪與後肢皆演化出輔助吸盤，使牠們能自如地在岩壁上爬行；而頭部則特化為吸力最強的主吸盤，不僅用於固定體勢，在突襲時更能死死吸附住獵物，確保自身不會因獵物劇烈掙扎而被甩脫。真正的進食口器則隱藏於尾部，便於在頭部鎖定目標後，靈活地尋找大動脈發動吸血。
+          </p>
+          <p class="description-text">
+            作為無眼生物，蛭龍在頸部兩側演化出共八個呼吸孔。這些孔洞對周遭環境極為敏感，能直接感應空氣的微小流動與地面傳來的震動。當獵物在洞穴中移動時，產生的氣流與腳步聲會被這八個孔洞捕捉，讓牠們能像擁有雷達般在腦中精確標定出獵物的位置。此外，當蛭龍以頭部吸盤緊貼獵物時，能直接感受到獵物體內的血管搏動，精準鎖定動脈位置，並根據脈搏的強弱判斷獵物的體能與失血狀態，從而決定採血的節奏。
           </p>
         </div>
 
         <div>
-          <div class="section-title">深雪掘食與純粹肉食</div>
+          <div class="section-title">集群生態與獵食哲學</div>
           <p class="description-text">
-            在極度嚴酷的雪域環境中，冰霜骷魔展現出純粹的肉食習性。高海拔地帶的低溫使得因雪崩或嚴寒而死亡的野獸屍骸得以長期完好保存，這成為了牠們最穩定的食物來源。在覓食時，冰霜骷魔完全依賴其異常發達的修長前肢，這雙前肢前端生有堅實銳利的指骨，能如鏟鎬般高效率地深掘厚重積雪，將深埋於數公尺冰層之下的生物遺骸完整翻掘出土以供食用。除了食腐之外，當察覺到雪原表層有活體氣息時，牠們也會利用長臂的伸展半徑實施伏擊，迅速撲殺穿梭於岩隙間的雪兔或山鼠等小型寒帶生物。牠們生有一副強健的胃與耐寒的消化機能，能毫不費力地分解冰封已久的堅硬生肉與骨髓，從中汲取高熱量與脂肪以維繫生存。
+            蛭龍執行著一套精密且冷酷的「永續經營」哲學。牠們以一雌多雄（通常為 1 雌配 2~3 雄）為單位組成小型集群。雌性身為群體的戰術中樞，會透過釋放特定濃度的訊息素發布採血指令；而體型較嬌小的雄性則是執行者，負責多點滲透與採血。
+          </p>
+          <p class="description-text">
+            這種訊息素對多數生物而言帶有強烈的刺鼻異味，會對呼吸道與黏膜產生刺激，使獵物感到煩躁與不適，這在昏暗的洞窟中能在一定程度上干擾對手的專注力。蛭龍的集群合作並非為了擊殺獵物，而是為了「資源分配」。透過多點、少量且頻率精準的採血，牠們能讓獵物在存活的前提下，維持數日的供血需求。
           </p>
         </div>
 
         <div>
-          <div class="section-title">孤獨散居與溫和天性</div>
+          <div class="section-title">行動習性與溝通</div>
           <p class="description-text">
-            儘管覆蓋著冰甲與長角的猙獰外表常令旅者退避三舍，冰霜骷魔的本性卻出乎意料地沉靜與溫和。牠們生性孤僻且極度缺乏社交需求，各個體通常獨自遊蕩於遼闊的雪嶺荒原之間，彼此之間維持著廣闊的生存距離。對於活動於同一地域的大型生物或是跋涉於雪道上的冒險者，冰霜骷魔幾乎從不表現出主動的攻擊意圖。只要外來者未曾越界做出具攻擊性的挑釁舉動，甚至未曾侵犯其正欲刨挖的食腐雪堆，牠們往往只會淡漠地投以一瞥，隨後便完全無視旁人的存在，自顧自地踏著沉重的步伐繼續覓食或離去。這種冷靜而井水不犯河水的處世方式，使得牠們成為極地環境中罕見不具主動威脅的魔物。
+            雖然身為龍族擁有飛行能力，但蛭龍多數時間僅將其視為遷徙或逃生的手段。在棲地內，牠們習慣收攏雙翼，利用四肢的吸盤於岩壁上進行無聲的匍匐爬行。這種移動方式配合其「氣息擬態」魔法——將自身魔力頻率與潮濕岩壁同化——能使多數偵測類魔法失效，待獵物放鬆警惕後，再以伸縮自如的軀體發動突襲。
+          </p>
+          <p class="description-text">
+            在社交與溝通層面，受限於極端特化的生理構造（無視覺器官、無發聲器官且缺乏可供展現肢體語言的外骨骼與表情肌），蛭龍極度缺乏常規的表達手段。即便未陷入狂魔化且具備高度理性，牠們在施展跨物種的「溝通」魔法時，仍必須高度依賴釋放特定化學結構的「訊息素」來輔助，才能勉強向外族傳達準確的意圖與情緒。
+          </p>
+          <p class="description-text">
+            儘管表達方式充滿物理限制，由雌性主導的談判仍充滿極端的功利性。牠們不執著於無意義的殺戮，若入侵者展現出足以威脅其生存的實力，雌性會透過釋放平緩但濃烈的訊息素配合魔法傳遞交涉意願，傾向以棲地的通行權來交換資源的穩定與群體的安全。
           </p>
         </div>
 
         <div>
-          <div class="section-title">刺骨前肢與防衛模式</div>
+          <div class="section-title">配偶篩選與繁殖</div>
           <p class="description-text">
-            冰霜骷魔之所以能在凶險的極寒地帶安穩生存，關鍵在於其修長前肢所具備的超常低溫特質。牠們的前肢肢端常態維持在極致的冰點之下，任何有溫度的物體一旦與其肢體發生直接接觸，體表的熱能便會遭到持續且迅速的抽離，若接觸時間稍長，受觸部位便會由外向內迅速凝結，直至化為僵硬脆裂的冰塊。這項生理特性是無時無刻自然運作的，冰霜骷魔自身對此並無特殊意識，對其而言這僅是維持生命常態的肢體溫度。然而，在面臨猛獸的主動撕咬或外來敵意挑釁時，牠們會順勢揮舞粗長的前肢進行自衛格擋與反擊，任何試圖近身纏鬥的掠食者往往在觸碰其前肢的數息之間，便會因肢體急劇凍結而徹底喪失行動能力。
+            蛭龍的配偶篩選極度嚴苛，不僅考驗雄性的戰鬥能力，更強調對「棲地經營」的貢獻。雌性會依據雄性能否在保證不殺死獵物的前提下，帶回高頻率的血液供養群體，作為挑選伴侶的核心指標。若雄性表現出過度嗜殺或採血效率低下的特質，將直接被雌性拒絕。
+          </p>
+          <p class="description-text">
+            在產卵期，雌性通常僅產下 2 至 3 顆龍蛋。為了確保環境條件達標，牠們會利用自身分泌的黏液與採血所得的血漿，在洞窟深處築起一座嚴密封閉的巢穴，藉由血漿腐化與發酵產生的恆溫與魔力環境，來誘導龍蛋孵化為蛭龍。期間，雄性會進行高強度的護巢工作，任何試圖侵入巢穴區域的生物，皆會遭受集群不計代價的猛烈攻擊。
           </p>
         </div>
 
         <div>
-          <div class="section-title">散埋雪坑與破殼再生</div>
+          <div class="section-title">幼體發育與族群傳承</div>
           <p class="description-text">
-            在繁衍後代方面，冰霜骷魔並不遵循固定的配偶關係。在繁殖期結束後，受精的雌性會產下數枚硬質卵，並利用發達的前肢將卵分散深埋於背風坡的不同雪坑之中。親代在完成掩埋後便會直接離去，不再承擔任何孵化守候或育幼責任，任由卵殼在深雪中吸收周遭環境的冰系魔素緩慢孕育。孵化出世的幼體自破殼起便必須獨立求生，雖然牠們誕生時全身已具備基本的角質硬殼保護，然而這層初生外殼本質上缺乏延展彈性，無法隨著骨骼與肌肉的增長而同步擴大。為此，幼體在長達數年的生長歲月中，本體會由內向外逐漸將已緊繃脆弱的舊殼硬生生撐裂剝落，並自皮層迅速分泌硬化出厚度與尺寸更勝以往的全新外甲，如此反覆循環數次破裂與重生的蛻變，方能最終塑成成體那身堅實深厚的凍岩重甲。
+            幼體破殼後會緊附於雌性腹部與尾部共同生活，由雌性將獵物血液代謝轉化為高營養分泌物供其吸收。當幼體成長至接近雄性體型時，若分化為雄性，會被雌性以訊息素驅逐至外尋找新領地；若分化為雌性，則作為「預備主宰」留在原集群，透過與母體的訊息素抗衡完成權力更迭，確保每一代的群體調度能力始終維持在最高效率。
           </p>
         </div>
-
+        
         <div>
-          <div class="section-title">外層冰碎與熱源弱點</div>
+          <div class="section-title">生理弱點</div>
           <p class="description-text">
-            在物理層面上，刀劍利刃的斬擊與羽箭穿刺極難穿透其堅韌的外殼；然而其最外層的冰殼質地偏脆，面對戰鎚等沉重鈍器的打擊時會應聲碎裂剝落。需特別指明的是，這類打擊傷害僅對外層冰殼有效，根本無法傷及內層質地堅硬的凍岩殼與肉身本體；然而外層冰殼的破碎，會瞬間瓦解其冰晶偽裝與第一道防護，且沉重鈍擊所傳遞的震盪衝擊仍會波及體內關節，造成行動上的遲滯。在屬性弱點方面，火屬性魔法與灼熱高溫則是其天然剋星，烈焰的炙烤會使體表冰甲急遽融化瓦解，極短時間內的劇烈溫差逆轉將嚴重破壞其體內的生理平衡，甚至引發體液枯竭與行動力徹底崩潰。
+            由於高度依賴感官探測與潮濕環境，蛭龍存在顯著的生理軟肋。首先，其呼吸孔對化學物質極度敏感；若在洞窟內施放高濃度的刺激性氣體，會直接使其呼吸孔感測機制陷入癱瘓，導致其失去定位能力。
+          </p>
+          <p class="description-text">
+            此外，蛭龍對環境濕度與溫度有絕對依賴。遭遇火屬性熱能時，其體表大量的水分與黏液會瞬間氣化，使牠們極易陷入致命的「蒸發」異常，隨之而來的是感知機能、訊息素分泌與移動能力的全面崩潰。而冰屬性魔法同樣是其剋星；由於其軟體結構本身並不耐寒，加上體表常時覆蓋著黏液，這使得牠們在遭受低溫攻擊時極易陷入大面積的「冰凍」異常，導致細胞壞死或直接被凍死。
           </p>
         </div>
 
@@ -436,23 +464,24 @@
                 SPECIES EXCLUSIVE
               </span>
             </div>
-            <div class="unique-name">◈ 凍爪</div>
+            <div class="unique-name">◈ 抗凝血 (Anticoagulant Enzyme)</div>
             <p class="unique-desc">
-              冰霜骷魔的前肢<strong>常態維持於極低溫狀態</strong>，任何物體與其前肢接觸，熱能便會被持續快速抽走，接觸時間越長，目標便會從接觸面向外<em>逐漸結凍</em>，直至形成完整的冰塊。
+              蛭龍的尾部進食口器能分泌特殊的生物酶，從生理機制上徹底阻斷血液的凝固反應。此效應<strong>僅針對傷口的物理癒合機制</strong>，並不干擾治療魔法對體力、精力或疼痛的修復。
             </p>
-            <p class="unique-desc">
-              此能力無時無刻持續作用，冰霜骷魔本身對此毫無感知——對牠而言，前肢的溫度不過是正常的生理狀態。正因如此，在與其接觸時務必格外謹慎，即便是出於非敵意的肢體接觸，同樣會觸發結凍效果。
+            <p class="unique-desc" style="margin-top:8px;">
+              受害者即便經由魔法消除了疼痛，傷口仍會維持在「受傷瞬間」的持續失血狀態，必須透過額外的物理包紮或化學中和才能止血，是極為棘手的戰術性異常。
             </p>
-            <div class="unique-note">※ 外甲類亞種共享此特性，惟結凍速度因個體體溫差異而略有不同</div>
           </div>
         </div>
 
         <div>
           <div class="trivia-box">
             <div class="trivia-header">軼事</div>
-            <div class="trivia-source">摘錄自冒險者手記，作者：佚名</div>
+            <div class="trivia-source">摘錄自達特里安圖書館，某期《魔物解剖學年刊》的爭議專欄</div>
             <div class="trivia-text">
-              那天我在雪山上被一頭熊型魔物打成了重傷，同伴去求援，留我一個人躺在雪地裡等。腿動不了，血還在滲，我盯著灰色的天空心想，大概就這樣了。<br><br>然後我聽見了腳步聲。<br><br>沉重、緩慢，踩在雪地上的聲音和一般生物不太一樣——我側過頭，看見一頭冰霜骷魔就站在距我三步遠的地方。牠低頭看了我一眼。<br><br>就只是看了一眼。<br><br>然後牠把視線移開，俯下身，用那雙修長的前肢開始刨我旁邊的雪堆——最後從裡面拖出一隻凍死的山鼠，叼著走了，頭也不回。<br><br>我當下不知道該慶幸還是感到受辱。總之我活下來了。
+              關於蛭龍「進食口器長在尾部」這一詭異的生理特徵，至今仍是學術界爭論不休的未解之謎。<br><br>
+              在無數的假說中，最令人啼笑皆非的無疑是「反向生長論」。提出該理論的學者堅稱，蛭龍的整體解剖結構其實是完全顛倒的——牠們現在的後肢實際上是前肢，雙翼則是退化的後腿；這意味著當人們看到蛭龍在岩壁上向前爬行時，牠其實一直都在「倒退移動」。<br><br>
+              當然，由於這個假說在骨骼動力學與神經傳導上實在過於荒謬，目前並未得到任何主流學派的採信，僅被當作茶餘飯後的笑談。
             </div>
           </div>
         </div>
@@ -462,11 +491,11 @@
 
     <div class="bottom-nav">
       <div class="nav-arrows">
-        <a href="metal_skelemon.html" class="nav-btn prev">上一頁</a>
+        <a href="frost_skelemon.html" class="nav-btn prev">上一頁</a>
       </div>
       <a href="index.html" class="nav-home">達特里安圖書館</a>
       <div class="nav-arrows">
-        <a href="Leech_Wyvern.html" class="nav-btn next">下一頁</a>
+        <span class="nav-btn next" style="visibility:hidden" aria-hidden="true">下一頁</span>
       </div>
     </div>
 
